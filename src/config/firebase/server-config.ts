@@ -4,7 +4,7 @@ export const serverConfig = {
 
     projectId: process.env.FIREBASE_PROJECT_ID!,
     clientEmail: process.env.FIREBASE_CLIENT_EMAIL!,
-    apiKey: process.env.FIREBASE_API_KEY!,
+    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY!,
     privateKey: process.env.FIREBASE_PRIVATE_KEY!.replace(
         /\\n/gm,
         "\n",
