@@ -1,32 +1,32 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import {useSignWithEmail, useSignInWithProviders} from "@/common/auth/useLogin";
+import { FormEvent, useState } from "react";
+import Link from "next/link";
+import {
+  useSignWithEmail,
+  useSignInWithProviders,
+} from "@/common/auth/useLogin";
 
 export default function SignUp() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const { handleGoogleSignIn } = useSignInWithProviders();
   const { signUpWithEmail } = useSignWithEmail();
 
-  const handleEmailSignUp = async (e: React.FormEvent) => {
+  const handleEmailSignUp = async (e: FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    await signUpWithEmail({email, password})
+    await signUpWithEmail({ email, password });
 
-    setIsLoading(false)
+    setIsLoading(false);
   };
 
-  const handleGoogleSignUp = async () => {
-    setIsLoading(true);
-    // TODO: Add Google authentication logic here
-    console.log('Sign up with Google');
-    setTimeout(() => setIsLoading(false), 1000);
+  const googleLogin = async () => {
+    await handleGoogleSignIn();
   };
 
   return (
@@ -37,7 +37,7 @@ export default function SignUp() {
             Create your account
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Or{' '}
+            Or{" "}
             <Link
               href="/signin"
               className="font-medium text-indigo-600 hover:text-indigo-500"
@@ -46,7 +46,7 @@ export default function SignUp() {
             </Link>
           </p>
         </div>
-        
+
         <form className="mt-8 space-y-6" onSubmit={handleEmailSignUp}>
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
@@ -111,7 +111,7 @@ export default function SignUp() {
                   Creating account...
                 </div>
               ) : (
-                'Create account'
+                "Create account"
               )}
             </button>
           </div>
@@ -122,14 +122,16 @@ export default function SignUp() {
                 <div className="w-full border-t border-gray-300" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-gray-50 text-gray-500">Or continue with</span>
+                <span className="px-2 bg-gray-50 text-gray-500">
+                  Or continue with
+                </span>
               </div>
             </div>
 
             <div className="mt-6">
               <button
                 type="button"
-                onClick={handleGoogleSignUp}
+                onClick={googleLogin}
                 disabled={isLoading}
                 className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >

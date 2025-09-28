@@ -2,25 +2,33 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import {
+  useSignInWithProviders,
+  useSignWithEmail,
+} from "@/common/auth/useLogin";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { signInWithEmail } = useSignWithEmail();
+  const { handleGoogleSignIn } = useSignInWithProviders();
 
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
+
     setIsLoading(true);
-    // TODO: Add Firebase authentication logic here
-    console.log("Sign in with email:", email, password);
-    setTimeout(() => setIsLoading(false), 1000);
+
+    try {
+      await signInWithEmail({ email, password });
+      setIsLoading(false);
+    } catch {
+      setIsLoading(false);
+    }
   };
 
-  const handleGoogleSignIn = async () => {
-    setIsLoading(true);
-    // TODO: Add Google authentication logic here
-    console.log("Sign in with Google");
-    setTimeout(() => setIsLoading(false), 1000);
+  const googleLogin = async () => {
+    await handleGoogleSignIn();
   };
 
   return (
@@ -77,17 +85,6 @@ export default function SignIn() {
             </div>
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <input
-                id="remember-me"
-                name="remember-me"
-                type="checkbox"
-                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-              />
-            </div>
-          </div>
-
           <div>
             <button
               type="submit"
@@ -120,7 +117,7 @@ export default function SignIn() {
             <div className="mt-6">
               <button
                 type="button"
-                onClick={handleGoogleSignIn}
+                onClick={googleLogin}
                 disabled={isLoading}
                 className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
